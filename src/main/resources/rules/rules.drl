@@ -1,0 +1,58 @@
+package com.drools.movieSelector;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import java.util.ArrayList;
+import java.util.List;
+
+global javax.swing.JFrame frame
+global javax.swing.JTextArea textArea;
+global javax.swing.JPanel optionsContainer;
+
+declare Question
+	text : String
+	selectionMode : int
+	answer : String
+end
+
+
+rule "Init" // pytanie nr1
+    when
+    then
+    	Question q = new Question();
+    	q.setText("Anyone recently getting over breakup?");
+    	q.setSelectionMode(1);
+    	q.setAnswer("");
+        insert(q);
+
+end
+
+rule "start"
+    when
+        q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals(""));
+    then
+        textArea.append(q.getText() + "\n");
+        List<JRadioButton> buttonList = new ArrayList<>();
+        ButtonGroup group = new ButtonGroup();
+        
+        buttonList.add(new JRadioButton("We're good!"));
+        buttonList.add(new JRadioButton("Let's avoid the heartache"));
+		
+		for(JRadioButton button : buttonList) {
+			group.add(button);
+		}
+		
+		for(JRadioButton button : buttonList) {
+			optionsContainer.add(button);
+		}
+		
+		optionsContainer.revalidate();
+		optionsContainer.repaint();
+end
+
+rule "question1_A"
+	when
+//        q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("We're good!"));
+	then
+		System.out.println("xd");
+end
