@@ -1,28 +1,18 @@
 package com.drools.movieSelector;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-
 import org.kie.api.KieServices;
 import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeSupport;
 
 public class MovieSelector {
 
@@ -32,7 +22,6 @@ public class MovieSelector {
             KieContainer kContainer = ks.getKieClasspathContainer();
             KieSession kSession = kContainer.newKieSession("ksession-rules");
             KieRuntimeLogger kLogger = ks.getLoggers().newFileLogger(kSession, "test");
-
 
             MovieUI ui = new MovieUI(new StartCallback(kSession), new AcceptCallback(kSession));
             ui.createAndShowGUI();
@@ -44,8 +33,8 @@ public class MovieSelector {
     public static class MovieUI extends JPanel {
         private JTextArea output;
         private JPanel optionsContainer;
-        private StartCallback startCallback;
-        private AcceptCallback acceptCallback;
+        private StartCallback startCallback; // note: obsługa klawisza START
+        private AcceptCallback acceptCallback; // note: obsługa klawisza NextQuestion
 
         public MovieUI(StartCallback startCallback, AcceptCallback acceptCallback) {
             super(new BorderLayout());
@@ -53,68 +42,68 @@ public class MovieSelector {
             this.startCallback = startCallback;
             this.acceptCallback = acceptCallback;
 
-            JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
-            add( splitPane,
-                    BorderLayout.CENTER );
+            JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+            add(splitPane,
+                    BorderLayout.CENTER);
 
             //create top half of split panel and add to parent
             JPanel topHalf = new JPanel();
-            topHalf.setLayout( new BoxLayout( topHalf, BoxLayout.X_AXIS ) );
-            topHalf.setBorder( BorderFactory.createEmptyBorder( 5,5,0, 5 ) );
-            topHalf.setMinimumSize( new Dimension( 400,
-                    50 ) );
-            topHalf.setPreferredSize( new Dimension( 450,
-                    250 ) );
-            splitPane.add( topHalf );
+            topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.X_AXIS));
+            topHalf.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
+            topHalf.setMinimumSize(new Dimension(400,
+                    50));
+            topHalf.setPreferredSize(new Dimension(450,
+                    250));
+            splitPane.add(topHalf);
 
             //create bottom top half of split panel and add to parent
-            JPanel bottomHalf = new JPanel( new BorderLayout() );
-            bottomHalf.setMinimumSize( new Dimension( 400,
-                    50 ) );
-            bottomHalf.setPreferredSize( new Dimension( 450,
-                    300 ) );
-            splitPane.add( bottomHalf );
+            JPanel bottomHalf = new JPanel(new BorderLayout());
+            bottomHalf.setMinimumSize(new Dimension(400,
+                    50));
+            bottomHalf.setPreferredSize(new Dimension(450,
+                    300));
+            splitPane.add(bottomHalf);
 
             //Container that list container that shows available store items
-            optionsContainer = new JPanel( new GridLayout( 0, 1 ) );
-            optionsContainer.setBorder( BorderFactory.createTitledBorder( "Options" ) );
-            topHalf.add( optionsContainer );
+            optionsContainer = new JPanel(new GridLayout(0, 1));
+            optionsContainer.setBorder(BorderFactory.createTitledBorder("Options"));
+            topHalf.add(optionsContainer);
 
 
-            JPanel tableContainer = new JPanel( new GridLayout( 1,
-                    1 ) );
-            tableContainer.setBorder( BorderFactory.createTitledBorder( "Table" ) );
-            topHalf.add( tableContainer );
+            JPanel tableContainer = new JPanel(new GridLayout(1,
+                    1));
+            tableContainer.setBorder(BorderFactory.createTitledBorder("Table"));
+            topHalf.add(tableContainer);
 
 
             //Create panel for checkout button and add to bottomHalf parent
             JPanel buttonPane = new JPanel();
-            JButton button = new JButton( "Start" );
-            button.setVerticalTextPosition( AbstractButton.CENTER );
-            button.setHorizontalTextPosition( AbstractButton.LEADING );
+            JButton button = new JButton("Start");
+            button.setVerticalTextPosition(AbstractButton.CENTER);
+            button.setHorizontalTextPosition(AbstractButton.LEADING);
             //attach handler to assert items into working memory
-            button.addMouseListener( new StartButtonHandler() );
-            button.setActionCommand( "checkout" );
-            buttonPane.add( button );
-            bottomHalf.add( buttonPane, BorderLayout.NORTH );
+            button.addMouseListener(new StartButtonHandler());
+            button.setActionCommand("checkout");
+            buttonPane.add(button);
+            bottomHalf.add(buttonPane, BorderLayout.NORTH);
 
-            button = new JButton( "Accept" );
-            button.setVerticalTextPosition( AbstractButton.CENTER );
-            button.setHorizontalTextPosition( AbstractButton.TRAILING );
+            button = new JButton("Next Question!");
+            button.setVerticalTextPosition(AbstractButton.CENTER);
+            button.setHorizontalTextPosition(AbstractButton.TRAILING);
             //attach handler to assert items into working memory
             button.addMouseListener(new AcceptButtonHandler());
-            button.setActionCommand( "Next Question" );
-            buttonPane.add( button );
-            bottomHalf.add( buttonPane, BorderLayout.NORTH );
+            button.setActionCommand("accept");
+            buttonPane.add(button);
+            bottomHalf.add(buttonPane, BorderLayout.NORTH);
 
 
-            output = new JTextArea( 1, 10 );
-            output.setEditable( false );
-            JScrollPane outputPane = new JScrollPane( output,
+            output = new JTextArea(1, 10);
+            output.setEditable(false);
+            JScrollPane outputPane = new JScrollPane(output,
                     ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
-            bottomHalf.add( outputPane,
-                    BorderLayout.CENTER );
+                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            bottomHalf.add(outputPane,
+                    BorderLayout.CENTER);
 //            output.append("tutaj chyba bysmy mogli wypisywać pytanie\n");
 //            output.append("tam gdzie jest \"List\" mozna chyba wyswietlac dostepne opcje do pytania\n");
 
@@ -187,16 +176,49 @@ public class MovieSelector {
         }
 
         public void accept() {
-            for(Component c : optionsContainer.getComponents()) {
-                if(c instanceof JRadioButton && ((JRadioButton) c).isSelected()) {
-                    System.out.println(((JRadioButton) c).getText());
+            // note: obsługa wybrania odpowiedniego klawisza z odpowiedzia
+            for (Component c : optionsContainer.getComponents()) {
+                if (c instanceof JRadioButton && ((JRadioButton) c).isSelected()) {
+                    QueryResults results = kSession.getQueryResults("getQuestionsWithNoAnswer");
+                    for (QueryResultsRow row : results) {
+                        Question question = (Question) row.get("question"); // note: pytania bez odpowiedzi
+                        FactHandle fh = this.kSession.getFactHandle(question);
+                        question.setAnswer(((JRadioButton) c).getText());
+                        this.kSession.update(fh,question);
+
+                        kSession.fireAllRules();
+                        //note: wyswietl pytanie w konsoli
+                        //System.out.println(question.getText());
+                    }
+                    // note: wyswietl odpowiedz wybrana
+                    //System.out.println(((JRadioButton) c).getText());
                     break;
                 }
             }
         }
     }
 
-    public static class Product {
+    public static class Question {
+        String text;
+        String answer;
 
+        public Question() {
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getAnswer() {
+            return answer;
+        }
+
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
     }
 }

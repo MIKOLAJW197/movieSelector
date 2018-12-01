@@ -3,25 +3,23 @@ package com.drools.movieSelector;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List
+import com.drools.movieSelector.MovieSelector.Question
+import java.awt.Component;
 
 global javax.swing.JFrame frame
 global javax.swing.JTextArea textArea;
 global javax.swing.JPanel optionsContainer;
 
-declare Question
-	text : String
-	selectionMode : int
-	answer : String
+query "getQuestionsWithNoAnswer"
+    question : Question(answer.equals(""))
 end
-
 
 rule "Init" // pytanie nr1
     when
     then
     	Question q = new Question();
     	q.setText("Anyone recently getting over breakup?");
-    	q.setSelectionMode(1);
     	q.setAnswer("");
         insert(q);
 
@@ -52,7 +50,14 @@ end
 
 rule "question1_A"
 	when
-//        q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("We're good!"));
+        q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("We're good!"));
 	then
-		System.out.println("xd");
+		System.out.println("odpowiedz 1");
+end
+
+rule "question1_B"
+	when
+        q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("Let's avoid the heartache"));
+	then
+		System.out.println("odpowiedz 2");
 end
