@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeSupport;
 
 public class MovieSelector {
 
@@ -184,6 +183,7 @@ public class MovieSelector {
                         Question question = (Question) row.get("question"); // note: pytania bez odpowiedzi
                         FactHandle fh = this.kSession.getFactHandle(question);
                         question.setAnswer(((JRadioButton) c).getText());
+
                         this.kSession.update(fh,question);
 
                         kSession.fireAllRules();

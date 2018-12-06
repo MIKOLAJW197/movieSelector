@@ -1,11 +1,11 @@
 package com.drools.movieSelector;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
 import java.util.ArrayList;
 import java.util.List
 import com.drools.movieSelector.MovieSelector.Question
 import java.awt.Component;
+import javax.swing.*;
+import org.kie.api.runtime.*;
 
 global javax.swing.JFrame frame
 global javax.swing.JTextArea textArea;
@@ -15,13 +15,43 @@ query "getQuestionsWithNoAnswer"
     question : Question(answer.equals(""))
 end
 
+function void newQuestionWithAnswer(String question, String answerA, String answerB, JFrame frame, JTextArea textArea, JPanel  optionsContainer ) {
+
+   textArea.setText(null);
+   textArea.append(question + "\n");
+   List<JRadioButton> buttonList = new ArrayList<>();
+   ButtonGroup group = new ButtonGroup();
+
+   buttonList.add(new JRadioButton(answerA));
+   buttonList.add(new JRadioButton(answerB));
+
+   optionsContainer.removeAll();
+
+   for(JRadioButton button : buttonList) {
+   			group.add(button);
+   		}
+
+   		for(JRadioButton button : buttonList) {
+   			optionsContainer.add(button);
+   		}
+
+   		optionsContainer.revalidate();
+   		optionsContainer.repaint();
+}
+
+function void createQuestion(String text, KieRuntime krt) {
+
+   Question q = new Question();
+   q.setText(text);
+   q.setAnswer("");
+   krt.insert(q);
+}
+
+
 rule "Init" // pytanie nr1
     when
     then
-    	Question q = new Question();
-    	q.setText("Anyone recently getting over breakup?");
-    	q.setAnswer("");
-        insert(q);
+    	createQuestion("Anyone recently getting over breakup?", kcontext.getKieRuntime());
 
 end
 
@@ -29,35 +59,38 @@ rule "start"
     when
         q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals(""));
     then
-        textArea.append(q.getText() + "\n");
-        List<JRadioButton> buttonList = new ArrayList<>();
-        ButtonGroup group = new ButtonGroup();
-        
-        buttonList.add(new JRadioButton("We're good!"));
-        buttonList.add(new JRadioButton("Let's avoid the heartache"));
-		
-		for(JRadioButton button : buttonList) {
-			group.add(button);
-		}
-		
-		for(JRadioButton button : buttonList) {
-			optionsContainer.add(button);
-		}
-		
-		optionsContainer.revalidate();
-		optionsContainer.repaint();
+    newQuestionWithAnswer(q.getText() ,"We're good!","Let's avoid the heartache", frame, textArea, optionsContainer);
+
 end
 
 rule "question1_A"
 	when
         q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("We're good!"));
 	then
-		System.out.println("odpowiedz 1");
+        createQuestion("Do you want to cry?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Do you want to cry?", "Load up on the waterproof mascara!", "I'd rather not", frame, textArea, optionsContainer);
 end
 
 rule "question1_B"
 	when
         q : Question(q.getText().equals("Anyone recently getting over breakup?") && q.getAnswer().equals("Let's avoid the heartache"));
 	then
-		System.out.println("odpowiedz 2");
+		createQuestion("Would a hunky man help?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Would a hunky man help?", "I prefer a mystery man", "Yes please!", frame, textArea, optionsContainer);
+end
+
+rule "question2_A"
+	when
+        q : Question(q.getText().equals("Would a hunky man help?") && q.getAnswer().equals("I prefer a mystery man"));
+	then
+        createQuestion("Do you like Tim Burton?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Do you like Tim Burton?", "Bring on the darkness!", "Something less morose", frame, textArea, optionsContainer);
+end
+
+rule "question2_B"
+	when
+        q : Question(q.getText().equals("Would a hunky man help?") && q.getAnswer().equals("Yes please!"));
+	then
+		createQuestion("Is it Ryan Gosling?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Is it Ryan Gosling?", "Over him", "Duh", frame, textArea, optionsContainer);
 end
