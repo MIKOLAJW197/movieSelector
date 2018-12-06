@@ -10,6 +10,8 @@ import org.kie.api.runtime.*;
 global javax.swing.JFrame frame
 global javax.swing.JTextArea textArea;
 global javax.swing.JPanel optionsContainer;
+global javax.swing.JPanel movieContainer;
+
 
 query "getQuestionsWithNoAnswer"
     question : Question(answer.equals(""))
@@ -45,6 +47,16 @@ function void createQuestion(String text, KieRuntime krt) {
    q.setText(text);
    q.setAnswer("");
    krt.insert(q);
+}
+
+function void showMovie(String movie, JPanel  movieContainer) {
+        JLabel label1 = new JLabel();
+        label1.setText(movie);
+        label1.setBounds(0, 0, 200, 50);
+        movieContainer.add(label1);
+
+        movieContainer.revalidate();
+        movieContainer.repaint();
 }
 
 
@@ -93,4 +105,35 @@ rule "question2_B"
 	then
 		createQuestion("Is it Ryan Gosling?", kcontext.getKieRuntime());
         newQuestionWithAnswer("Is it Ryan Gosling?", "Over him", "Duh", frame, textArea, optionsContainer);
+end
+
+rule "question3_A"
+	when
+        q : Question(q.getText().equals("Is it Ryan Gosling?") && q.getAnswer().equals("Over him"));
+	then
+        createQuestion("Indie eye or classic hunks?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Indie eye or classic hunks?", "Indie", "Can't argue with a classic", frame, textArea, optionsContainer);
+end
+
+rule "question3_B"
+	when
+        q : Question(q.getText().equals("Is it Ryan Gosling?") && q.getAnswer().equals("Duh"));
+	then
+		createQuestion("Is Gosling head over heels in love?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Is Gosling head over heels in love?", "If it's not starring me than no", "Yes", frame, textArea, optionsContainer);
+end
+
+rule "question4_A"
+	when
+        q : Question(q.getText().equals("Is Gosling head over heels in love?") && q.getAnswer().equals("If it's not starring me than no"));
+	then
+        createQuestion("Is he a playboy?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Is he a playboy?", "OK", "No, he's family man", frame, textArea, optionsContainer);
+end
+
+rule "question4_B"
+	when
+        q : Question(q.getText().equals("Is Gosling head over heels in love?") && q.getAnswer().equals("Yes"));
+	then
+        showMovie("Lars and the real girl", movieContainer);
 end

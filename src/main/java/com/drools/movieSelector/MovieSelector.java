@@ -32,6 +32,7 @@ public class MovieSelector {
     public static class MovieUI extends JPanel {
         private JTextArea output;
         private JPanel optionsContainer;
+        private JPanel movieContainer;
         private StartCallback startCallback; // note: obsługa klawisza START
         private AcceptCallback acceptCallback; // note: obsługa klawisza NextQuestion
 
@@ -65,14 +66,14 @@ public class MovieSelector {
 
             //Container that list container that shows available store items
             optionsContainer = new JPanel(new GridLayout(0, 1));
-            optionsContainer.setBorder(BorderFactory.createTitledBorder("Options"));
+            optionsContainer.setBorder(BorderFactory.createTitledBorder("Answer"));
             topHalf.add(optionsContainer);
 
 
-            JPanel tableContainer = new JPanel(new GridLayout(1,
+            movieContainer = new JPanel(new GridLayout(1,
                     1));
-            tableContainer.setBorder(BorderFactory.createTitledBorder("Table"));
-            topHalf.add(tableContainer);
+            movieContainer.setBorder(BorderFactory.createTitledBorder("Movie:"));
+            topHalf.add(movieContainer);
 
 
             //Create panel for checkout button and add to bottomHalf parent
@@ -103,11 +104,10 @@ public class MovieSelector {
                     ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             bottomHalf.add(outputPane,
                     BorderLayout.CENTER);
-//            output.append("tutaj chyba bysmy mogli wypisywać pytanie\n");
-//            output.append("tam gdzie jest \"List\" mozna chyba wyswietlac dostepne opcje do pytania\n");
 
             this.startCallback.setTextArea(output);
             this.startCallback.setOptionsContainer(optionsContainer);
+            this.startCallback.setMovieContainer(movieContainer);
             this.acceptCallback.setOptionsContainer(optionsContainer);
         }
 
@@ -140,6 +140,7 @@ public class MovieSelector {
         KieSession kSession;
         JTextArea textArea;
         JPanel optionsContainer;
+        JPanel movieContainer;
 
         public StartCallback(KieSession kSession) {
             this.kSession = kSession;
@@ -153,10 +154,15 @@ public class MovieSelector {
             this.optionsContainer = optionsContainer;
         }
 
+        public void setMovieContainer(JPanel movieContainer) {
+            this.movieContainer = movieContainer;
+        }
+
 
         public void checkout(JFrame frame) {
             kSession.setGlobal("frame", frame);
             kSession.setGlobal("optionsContainer", this.optionsContainer);
+            kSession.setGlobal("movieContainer", this.movieContainer);
             kSession.setGlobal("textArea", this.textArea);
             kSession.fireAllRules();
         }
@@ -184,7 +190,7 @@ public class MovieSelector {
                         FactHandle fh = this.kSession.getFactHandle(question);
                         question.setAnswer(((JRadioButton) c).getText());
 
-                        this.kSession.update(fh,question);
+                        this.kSession.update(fh, question);
 
                         kSession.fireAllRules();
                         //note: wyswietl pytanie w konsoli
