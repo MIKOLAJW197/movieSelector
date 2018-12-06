@@ -119,7 +119,7 @@ rule "question3_B"
 	when
         q : Question(q.getText().equals("Is it Ryan Gosling?") && q.getAnswer().equals("Duh"));
 	then
-		createQuestion("Is Gosling head over heels in love?", kcontext.getKieRuntime());
+	createQuestion("Is Gosling head over heels in love?", kcontext.getKieRuntime());
         newQuestionWithAnswer("Is Gosling head over heels in love?", "If it's not starring me than no", "Yes", frame, textArea, optionsContainer);
 end
 
@@ -136,4 +136,340 @@ rule "question4_B"
         q : Question(q.getText().equals("Is Gosling head over heels in love?") && q.getAnswer().equals("Yes"));
 	then
         showMovie("Lars and the real girl", movieContainer);
+end
+
+rule "question5_A"
+	when
+        q : Question(q.getText().equals("Do you like Tim Burton?") && q.getAnswer().equals("Bring on the darkness!"));
+	then
+        showMovie("Edward Scissorhands", movieContainer);
+end
+
+rule "question5_B"
+	when
+        q : Question(q.getText().equals("Do you like Tim Burton?") && q.getAnswer().equals("Something less morose"));
+	then
+	createQuestion("Are thieves involved?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Are thieves involved?", "I like a bad guy, but not a criminal", "I love danger", frame, textArea, optionsContainer);
+end
+
+rule "question6_A"
+	when
+        q : Question(q.getText().equals("Indie eye candy or classic hunks?") && q.getAnswer().equals("Indie"));
+	then
+        showMovie("500 Days of Summer", movieContainer);
+end
+
+rule "question6_B"
+	when
+        q : Question(q.getText().equals("Indie eye candy or classic hunks?") && q.getAnswer().equals("Can't argue with a classic"));
+	then
+	createQuestion("Tom Cruise?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Tom Cruise?", "No way", "Now you're talking", frame, textArea, optionsContainer);
+end
+
+rule "question7_A"
+	when
+        q : Question(q.getText().equals("Is he a playboy?") && q.getAnswer().equals("OK"));
+	then
+        showMovie("Crazy, Stupid Love", movieContainer);
+end
+
+rule "question7_B"
+	when
+        q : Question(q.getText().equals("Is he a playboy?") && q.getAnswer().equals("No, he's a family man"));
+	then
+        showMovie("Blue Valentine", movieContainer);
+end
+
+rule "question8_A"
+	when
+        q : Question(q.getText().equals("Are thieves involved?") && q.getAnswer().equals("I like a bad guy, but not a criminal"));
+	then
+        showMovie("Gone With the Wind", movieContainer);
+end
+
+rule "question8_B"
+	when
+        q : Question(q.getText().equals("Are thieves involved?") && q.getAnswer().equals("I love danger"));
+	then
+	createQuestion("International thieves?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("International thieves?", "America!", "Sure!", frame, textArea, optionsContainer);
+end
+
+rule "question9_A"
+	when
+        q : Question(q.getText().equals("Tom Cruise?") && q.getAnswer().equals("No way"));
+	then
+        createQuestion("Would you care to dance?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Would you care to dance?", "I like a man with moves", "I prefer a singer", frame, textArea, optionsContainer);
+end
+
+rule "question9_B"
+	when
+        q : Question(q.getText().equals("Tom Cruise?") && q.getAnswer().equals("Now you're talking"));
+	then
+	createQuestion("90s or 80s Tom?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("90s or 80s Tom?", "90s", "80s", frame, textArea, optionsContainer);
+end
+
+rule "question10_A"
+	when
+        q : Question(q.getText().equals("International thieves?") && q.getAnswer().equals("America!"));
+	then
+        createQuestion("Vegas or NYC?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Vegas or NYC?", "Vegas!", "NYC", frame, textArea, optionsContainer);
+end
+
+rule "question10_B"
+	when
+        q : Question(q.getText().equals("International thieves?") && q.getAnswer().equals("Sure"));
+	then
+	showMovie("French Kiss", movieContainer);
+end
+
+rule "question11_A"
+	when
+        q : Question(q.getText().equals("Would you care to dance?") && q.getAnswer().equals("I like a man with moves"));
+	then
+        createQuestion("Swayze or Bacon?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Swayze or Bacon?", "Bacon", "Swayze", frame, textArea, optionsContainer);
+end
+
+rule "question11_B"
+	when
+        q : Question(q.getText().equals("Would you care to dance?") && q.getAnswer().equals("I prefer a singer"));
+	then
+	showMovie("Grease", movieContainer);
+end
+
+rule "question12_A"
+	when
+        q : Question(q.getText().equals("90s or 80s Tom?") && q.getAnswer().equals("90s"));
+	then
+        showMovie("Jerry Maguire", movieContainer);
+end
+
+rule "question12_B"
+	when
+        q : Question(q.getText().equals("90s or 80s Tom?") && q.getAnswer().equals("80s"));
+	then
+	showMovie("Cocktail", movieContainer);
+end
+
+rule "question13_A"
+	when
+        q : Question(q.getText().equals("Vegas or NYC?") && q.getAnswer().equals("Vegas!"));
+	then
+        showMovie("Ocean's Eleven", movieContainer);
+end
+
+rule "question13_B"
+	when
+        q : Question(q.getText().equals("Vegas or NYC?") && q.getAnswer().equals("NYC"));
+	then
+	showMovie("The Thonas Crown Affair", movieContainer);
+end
+
+rule "question14_A"
+	when
+        q : Question(q.getText().equals("Swayze or Bacon?") && q.getAnswer().equals("Bacon"));
+	then
+        showMovie("Footloose", movieContainer);
+end
+
+rule "question14_B"
+	when
+        q : Question(q.getText().equals("Swayze or Bacon?") && q.getAnswer().equals("Swayze"));
+	then
+	showMovie("Dirty Dancing", movieContainer);
+end
+
+rule "question15_A"
+	when
+        q : Question(q.getText().equals("Do you want to cry?") && q.getAnswer().equals("Load up on the waterproof mascara!"));
+	then
+        createQuestion("Classic or contemporary tale?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Classic or contemporary tale?", "Classic romance", "Modern day romance", frame, textArea, optionsContainer);
+end
+
+rule "question15_B"
+	when
+        q : Question(q.getText().equals("Do you want to cry?") && q.getAnswer().equals("I'd rather not"));
+	then
+	createQuestion("Starring Julia Roberts?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Starring Julia Roberts?", "YES", "No Thanks", frame, textArea, optionsContainer);
+end
+
+rule "question16_A"
+	when
+        q : Question(q.getText().equals("Braniac?") && q.getAnswer().equals("A bit more lovable"));
+	then
+        showMovie("Bridget Johnes's Diary", movieContainer);
+end
+
+rule "question16_B"
+	when
+        q : Question(q.getText().equals("Braniac?") && q.getAnswer().equals("Sure!"));
+	then
+	showMovie("She's All That", movieContainer);
+end
+
+rule "question17_A"
+	when
+        q : Question(q.getText().equals("Clueless or empowered female lead?") && q.getAnswer().equals("Skip the ditz"));
+	then
+        createQuestion("Braniac?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Braniac?", "A bit more lovable", "Sure!", frame, textArea, optionsContainer);
+end
+
+rule "question17_B"
+	when
+        q : Question(q.getText().equals("Clueless or empowered female lead?") && q.getAnswer().equals("It is a comedy..."));
+	then
+	createQuestion("Classic or modern?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Classic or modern?", "Classic!", "Modern!", frame, textArea, optionsContainer);
+end
+
+rule "question18_A"
+	when
+        q : Question(q.getText().equals("Classic or modern?") && q.getAnswer().equals("Classic!"));
+	then
+	showMovie("Breakfast at Tiffany's", movieContainer);
+end
+
+rule "question18_B"
+	when
+        q : Question(q.getText().equals("Classic or modern?") && q.getAnswer().equals("Modern!"));
+	then
+        createQuestion("Does it involve high school?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Does it involve high school?", "Cheers to the golden years", "I'd rather not relive that", frame, textArea, optionsContainer);
+end
+
+rule "question19_A"
+	when
+        q : Question(q.getText().equals("Classic or contemporary tale?") && q.getAnswer().equals("Classic romance"));
+	then
+        createQuestion("Black & white film?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Black & white film?", "No thanks", "What's more classic?", frame, textArea, optionsContainer);
+end
+
+rule "question19_B"
+	when
+        q : Question(q.getText().equals("Classic or contemporary tale?") && q.getAnswer().equals("Modern day romance"));
+	then
+	showMovie("Titanic", movieContainer);
+end
+
+rule "question20_A"
+	when
+        q : Question(q.getText().equals("Starring Julia Roberts?") && q.getAnswer().equals("YES"));
+	then
+        createQuestion("Is marriage involved?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Is marriage involved?", "Who doesn't love a wedding?", "More a fan of the meet cute", frame, textArea, optionsContainer);
+end
+
+rule "question20_B"
+	when
+        q : Question(q.getText().equals("Starring Julia Roberts?") && q.getAnswer().equals("No Thanks"));
+	then
+	createQuestion("Rat Pack fan?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Rat Pack fan?", "Who?", "Duh!", frame, textArea, optionsContainer);
+end
+
+rule "question21_A"
+	when
+        q : Question(q.getText().equals("Rat Pack Fan?") && q.getAnswer().equals("Who?"));
+	then
+        createQuestion("Clueless or empowered female lead?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Clueless or empowered female lead?", "Skip the ditz", "It is a comedy...", frame, textArea, optionsContainer);
+end
+
+rule "question21_B"
+	when
+        q : Question(q.getText().equals("Rat Pack Fan?") && q.getAnswer().equals("Duh!"));
+	then
+	createQuestion("Does Molly Ringwald lead the pack?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Does Molly Ringwald lead the pack?", "I prefer a democracy", "Always!", frame, textArea, optionsContainer);
+end
+rule "question22_A"
+	when
+        q : Question(q.getText().equals("Does it involve high school?") && q.getAnswer().equals("Cheers to the golden years"));
+	then
+        createQuestion("90s Classic?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("90s Classic?", "Absolutely!", "Maybe something lesser known", frame, textArea, optionsContainer);
+end
+
+rule "question22_B"
+	when
+        q : Question(q.getText().equals("Does it involve high school?") && q.getAnswer().equals("I'd rather not relive that"));
+	then
+	showMovie("13 Going on 30", movieContainer);
+end
+rule "question23_A"
+	when
+        q : Question(q.getText().equals("Does Molly Ringwald lead the pack?") && q.getAnswer().equals("I prefer a democracy"));
+	then
+        showMovie("French Kiss", movieContainer);
+end
+
+rule "question23_B"
+	when
+        q : Question(q.getText().equals("Does Molly Ringwald lead the pack?") && q.getAnswer().equals("Always!"));
+	then
+	createQuestion("Did you forget her brithday?", kcontext.getKieRuntime());
+        newQuestionWithAnswer("Did you forget her brithday?", "No way!", "Maybe?", frame, textArea, optionsContainer);
+end
+rule "question24_A"
+	when
+        q : Question(q.getText().equals("90s classic?") && q.getAnswer().equals("Absolutely!"));
+	then
+        showMovie("Clueless", movieContainer);
+end
+
+rule "question24_B"
+	when
+        q : Question(q.getText().equals("90s classic?") && q.getAnswer().equals("Maybe something lesser known"));
+	then
+	showMovie("Never Been Kissed", movieContainer);
+end
+rule "question25_A"
+	when
+        q : Question(q.getText().equals("Did you forget her brithday?") && q.getAnswer().equals("No way!"));
+	then
+        showMovie("Pretty in Pink", movieContainer);
+end
+
+rule "question25_B"
+	when
+        q : Question(q.getText().equals("Did you forget her brithday?") && q.getAnswer().equals("Maybe?"));
+	then
+	showMovie("Sixteen Candles", movieContainer);
+end
+rule "question26_A"
+	when
+        q : Question(q.getText().equals("Black & white film?") && q.getAnswer().equals("No thanks"));
+	then
+        showMovie("Love Story", movieContainer);
+end
+
+rule "question26_B"
+	when
+        q : Question(q.getText().equals("Black & white film?") && q.getAnswer().equals("What's more classic?"));
+	then
+	showMovie("Casablanca", movieContainer);
+end
+rule "question27_A"
+	when
+        q : Question(q.getText().equals("Is marriage involved?") && q.getAnswer().equals("Who doesn't love a wedding?"));
+	then
+        createQuestion("Vegas or NYC?", kcontext.getKieRuntime());
+        showMovie("My Best Friend's Wedding", movieContainer);
+end
+
+rule "question27_B"
+	when
+        q : Question(q.getText().equals("Is marriage involved?") && q.getAnswer().equals("More a fan of the meet cute"));
+	then
+	showMovie("Pretty Women", movieContainer);
 end
